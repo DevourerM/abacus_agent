@@ -1,0 +1,39 @@
+INPUT_PARAMETERS
+# ABACUS INPUT 模板。复制为 INPUT 后运行；带【改我】的项目必须确认。
+
+# System
+suffix              【改我】system-scf
+ntype               【改我】1
+calculation         【改我】scf              # scf/nscf/relax/cell-relax/md
+esolver_type        ksdft
+basis_type          【改我】lcao             # pw 或 lcao
+symmetry            【改我】-1
+init_chg            【改我】atomic           # NSCF 通常用 file
+pseudo_dir          【改我】/absolute/path/to/pseudopotentials
+orbital_dir         【改我】/absolute/path/to/orbitals  # LCAO 必填
+
+# K points: 使用 kspacing 时通常不需要 KPT；否则保留 KPT 文件
+kspacing            【改我】0.10 0.10 0.10
+# kpoint_file       KPT
+
+# Electronic structure
+ks_solver           【改我】genelpa            # 必须与编译选项和 basis_type 匹配
+ecutwfc            【改我】100                # Ry；需做截断能收敛测试
+nbands             【改我】16                 # 至少覆盖所需空带
+nspin              【改我】1
+smearing_method     【改我】gauss
+smearing_sigma      【改我】0.015              # Ry；绝缘体可测试 fixed
+mixing_type         broyden
+mixing_beta         0.4
+scf_nmax            100
+scf_thr             【改我】1e-8
+
+# HSE/EXX（仅 dft_functional=hse 等混合泛函时填写）
+# dft_functional   hse
+# exx_erfc_alpha   0.25
+# exx_erfc_omega   0.11
+
+# Output
+out_chg            1                      # 需要重启/检查电荷时打开
+out_band           1                      # 需要能带本征值时打开
+out_level          ie

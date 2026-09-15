@@ -1,0 +1,46 @@
+#!/bin/bash
+# ABACUS LSF 模板：复制到包含 INPUT 和 STRU 的计算目录。
+# 提交前搜索【改我】并逐项确认；提交命令由用户明确执行。
+
+#BSUB -J 【改我】abacus-scf
+#BSUB -q 【改我】YOUR_QUEUE
+#BSUB -n 【改我】12
+#BSUB -W 【改我】24:00
+#BSUB -o abacus.%J.out
+#BSUB -e abacus.%J.err
+
+set -uo pipefail
+
+# 【改我】固定为集群实际安装路径；本机示例路径如下
+ABACUS_ENV="/fsb/home/jiansun/js_geqj/abacus/abacus-develop/toolchain/abacus_env.sh"
+ABACUS_BIN="/fsb/home/jiansun/js_geqj/abacus/abacus-develop/bin/abacus"
+OMP_THREADS=1
+
+if [[ -z "${LSB_DJOB_NUMPROC:-}" ]]; then
+    echo "ERROR: submit this script through bsub." >&2
+    exit 1
+fi
+if [[ ! -f INPUT || ! -f STRU ]]; then
+    echo "ERROR: INPUT and STRU are required in the working directory." >&2
+    exit 1
+fi
+if [[ ! -f "${ABACUS_ENV}" || ! -x "${ABACUS_BIN}" ]]; then
+    echo "ERROR: ABACUS installation paths are invalid." >&2
+    exit 1
+fi
+if (( LSB_DJOB_NUMPROC % OMP_THREADS != 0 )); then
+    echo "ERROR: CPU count must be divisible by OMP_THREADS." >&2
+    exit 1
+fi
+
+MPI_RANKS=$((LSB_DJOB_NUMPROC / OMP_THREADS))
+source "${ABACUS_ENV}"
+export OMP_NUM_THREADS="${OMP_THREADS}"
+export OMP_PLACES=cores
+export OMP_PROC_BIND=close
+
+printf 'ABACUS job=%s ranks=%s threads=%s start=%s\n' \
+    "${LSB_JOBID}" "${MPI_RANKS}" "${OMP_NUM_THREADS}" "$(date)"
+
+mpirun -np "${MPI_RANKS}" "${ABACUS_BIN}" 2>&1 | tee "abacus.${LSB_JOBID}.log"
+exit "${PIPESTATUS[0]}"

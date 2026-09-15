@@ -1,0 +1,25 @@
+ATOMIC_SPECIES
+# 元素 质量(amu) 赝势文件名；文件名必须能在 INPUT 的 pseudo_dir 找到
+【改我】Si 28.0855 Si_ONCV_PBE-1.0.upf
+
+NUMERICAL_ORBITAL
+# LCAO 必填；文件名必须能在 INPUT 的 orbital_dir 找到
+【改我】Si_gga_7au_100Ry_2s2p1d.orb
+
+LATTICE_CONSTANT
+【改我】1.0                         # Bohr；不要把 Angstrom 直接填这里
+
+LATTICE_VECTORS
+# 三行晶格矢量，按 LATTICE_CONSTANT 缩放
+【改我】1.0 0.0 0.0
+【改我】0.0 1.0 0.0
+【改我】0.0 0.0 1.0
+
+ATOMIC_POSITIONS
+【改我】Direct                    # Direct 或 Cartesian_angstrom 等
+
+【改我】Si                         # 必须与 ATOMIC_SPECIES 的元素标签一致
+0.0                                # 默认磁矩；非磁体系可设 0.0
+【改我】1                            # 该元素原子数
+# 坐标后可用 m 1 1 1/0 0 0 指定弛豫自由度
+【改我】0.0 0.0 0.0 m 1 1 1

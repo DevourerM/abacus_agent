@@ -1,0 +1,16 @@
+K_POINTS
+# 自动网格示例：第二行 0 表示由 Gamma/MP 网格生成
+0
+【改我】Gamma                    # Gamma 或 MP
+【改我】4 4 4 0 0 0              # nkx nky nkz shiftx shifty shiftz
+
+# 能带 line-mode 示例（不要与上面的自动网格同时保留）
+# K_POINTS
+# 【改我】6
+# Line                         # Direct 坐标；Cartesian 用 Line_Cartesian
+# 0.000 0.000 0.000 20          # Gamma
+# 0.500 0.000 0.500 20          # X
+# 0.500 0.500 0.500 20          # L
+# 0.000 0.000 0.000 20          # Gamma
+# 0.375 0.375 0.750 20          # K
+# 0.500 0.000 0.500 1           # X
